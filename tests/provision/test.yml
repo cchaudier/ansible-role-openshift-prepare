@@ -1,0 +1,16 @@
+---
+- name: Bring up docker containers
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+      - name: iptables_host_1
+        image: "centos7"
+  roles:
+    - { role: provision_docker, provision_docker_inventory: "{{inventory}}" }
+
+
+- name: Hello world
+  hosts: docker_containers
+  tasks:
+    - debug: msg=”Hello World”
