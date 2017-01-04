@@ -14,6 +14,7 @@ addons:
 install:
   # Install ansible
   - pip install ansible
+  - - ansible-galaxy install -r tests/requirements.yml -p tests/roles/
 
   # Check ansible version
   - ansible --version
@@ -23,8 +24,8 @@ install:
 
 script:
   # Basic role syntax check
-  - ansible-playbook tests/syntax/test.yml -i tests/syntax/inventory --syntax-check
-  - ansible-playbook tests/provision/test.yml
+  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  - ansible-playbook tests/test.yml -i tests/inventory
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/

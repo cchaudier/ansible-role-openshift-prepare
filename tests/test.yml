@@ -9,8 +9,7 @@
   roles:
     - { role: provision_docker, provision_docker_inventory: "{{inventory}}" }
 
-
-- name: Hello world
+- name: Run tests
   hosts: docker_containers
-  tasks:
-    - debug: msg=”Hello World”
+  roles:
+    - role: openshift-prepare
