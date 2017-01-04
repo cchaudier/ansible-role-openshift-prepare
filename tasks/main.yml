@@ -1,0 +1,14 @@
+---
+#https://docs.openshift.org/latest/install_config/install/host_preparation.html
+- name: Installing Base Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wget
+    - git
+    - net-tools
+    - bind-utils
+    - iptables-services
+    - bridge-utils
+    - bash-completion
