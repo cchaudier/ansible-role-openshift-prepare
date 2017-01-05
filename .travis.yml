@@ -12,6 +12,7 @@ addons:
     - python-pip
 
 install:
+  - pip install docker-py
   # Install ansible
   - pip install ansible
   # Check ansible version
