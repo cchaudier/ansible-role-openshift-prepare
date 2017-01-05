@@ -7,7 +7,9 @@
       - name: iptables_host_1
         image: "centos:7"
   roles:
-    - { role: provision_docker, provision_docker_inventory: "{{inventory}}" }
+    - role: provision_docker
+      provision_docker_inventory: "{{inventory}}"
+      provision_docker_use_docker_connection: true
 
 - name: Run tests
   hosts: docker_containers
