@@ -1,8 +1,11 @@
 require_relative 'spec_helper'
 
+packages = [ "wget", "git", "net-tools", "bind-utils", "iptables-services", "bridge-utils", "bash-completion", "ansible", "pyOpenSSL" ]
 
-describe 'wget Packages' do
-    describe package('wget') do
-        it { should be_installed }
-    end
+packages.each do |package|
+  describe ""#{package} Packages" do
+      describe package("#{package}") do
+          it { should be_installed }
+      end
+  end
 end

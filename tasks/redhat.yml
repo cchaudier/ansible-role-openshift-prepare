@@ -1,0 +1,47 @@
+---
+#https://docs.openshift.org/latest/install_config/install/host_preparation.html
+
+- name: Installing Base Packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - wget
+    - git
+    - net-tools
+    - bind-utils
+    - iptables-services
+    - bridge-utils
+    - bash-completion
+
+- name: Update the yum cache
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: install the EPEL repo
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: Disable the EPEL repository globally
+  replace:
+    dest: /etc/yum.repos.d/epel.repo
+    regexp: '^enabled=1'
+    replace: 'enabled=0'
+    backup: yes
+
+- name: install the EPEL repo
+  yum:
+    name: "{{ item }}"
+    enablerepo: "epel"
+    state: present
+  with_items:
+   - ansible
+   - pyOpenSSL
