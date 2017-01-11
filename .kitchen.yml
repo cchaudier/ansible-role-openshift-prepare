@@ -1,0 +1,26 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+provisioner:
+  name: ansible_playbook
+  hosts: localhost
+  requirements_path: requirements.yml
+  require_ansible_repo: true
+  ansible_verbose: false
+  ansible_version: latest
+  require_chef_for_busser: false
+
+platforms:
+  - name: centos-7.2
+
+verifier:
+  name: serverspec
+  sudo_path: true
+  ruby_bindir: '/usr/bin'
+
+suites:
+  - name: default
+    verifier:
+      default_pattern: true
