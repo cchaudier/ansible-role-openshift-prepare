@@ -13,6 +13,7 @@
     - iptables-services
     - bridge-utils
     - bash-completion
+    - docker
 
 - name: Update the yum cache
   yum:
@@ -20,12 +21,12 @@
     state: latest
     update_cache: yes
 
-- name: upgrade all packages
+- name: Upgrade all packages
   yum:
     name: '*'
     state: latest
 
-- name: install the EPEL repo
+- name: Install the EPEL repo
   yum:
     name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     state: present
@@ -37,7 +38,7 @@
     replace: 'enabled=0'
     backup: yes
 
-- name: install the EPEL repo
+- name: Install the EPEL repo
   yum:
     name: "{{ item }}"
     enablerepo: "epel"
@@ -45,3 +46,20 @@
   with_items:
    - ansible
    - pyOpenSSL
+
+- name: Add insecure registry and logs to docker OPTIONS
+  replace:
+   dest: /etc/sysconfig/docker
+   regexp: '^OPTIONS=.*'
+   replace: 'OPTIONS="--selinux-enabled --insecure-registry {{ openshift_prepare_services_subnet }} --log-opt max-size={{ openshift_prepare_log_max_size }} --log-opt max-file={{ openshift_prepare_log_max_file }}"'
+   backup: yes
+
+#TODO : Disk and VG management
+#https://docs.openshift.org/latest/install_config/install/host_preparation.html#configuring-docker-storage
+#https://galaxy.ansible.com/mkubenka/docker-storage-setup/
+
+- name: Enable docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes

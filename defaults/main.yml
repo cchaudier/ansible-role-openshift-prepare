@@ -1,2 +1,7 @@
 ---
 # defaults file for ansible-role-openshift-prepare
+
+openshift_prepare_user: "openshift"
+openshift_prepare_services_subnet: "172.30.0.0/16"
+openshift_prepare_log_max_size: "1M"
+openshift_prepare_log_max_file: "7"
