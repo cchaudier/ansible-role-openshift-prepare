@@ -2,3 +2,11 @@
 - hosts: localhost
   roles:
     - role: cchaudier.openshift-prepare
+
+  tasks:
+    - name: Installing tests Packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - iproute
