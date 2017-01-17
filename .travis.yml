@@ -39,7 +39,7 @@ script:
   - sudo ansible all -i "127.0.0.1," -m lineinfile -a "regexp=^#host_key_checking dest=/etc/ansible/ansible.cfg line='host_key_checking = False'" -c local
   # Basic role syntax check
   - ansible-playbook test/test.yml -i test/inventory --syntax-check
-  - ansible-playbook test/test.yml -i test/inventory
+  #- ansible-playbook test/test.yml -i test/inventory
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
