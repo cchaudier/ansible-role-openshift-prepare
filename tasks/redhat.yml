@@ -63,3 +63,14 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Download openshift-ansible repository
+  git:
+    repo: "https://github.com/openshift/openshift-ansible.git"
+    dest: "{{ openshift_prepare_ansible_dir }}"
+    version: "master"
+    accept_hostkey: yes
+    force: yes
+  register: git_deploy
+  until: git_deploy|succeeded
+  when: openshift_prepare_get_ansible_repo
