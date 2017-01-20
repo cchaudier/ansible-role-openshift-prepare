@@ -74,3 +74,21 @@
   register: git_deploy
   until: git_deploy|succeeded
   when: openshift_prepare_get_ansible_repo
+
+- name: "Open require ports"
+  firewalld:
+    port: "{{ item }}"
+    immediate: true
+    permanent: true
+    state: enabled
+  with_items:
+    - 80/tcp
+    - 443/tcp
+    - 8443/tcp
+    - 8053/tcp
+    - 8453/udp
+    - 10250/tcp
+    - 4789/tcp
+    - 2049/tcp
+    - 4001/tcp
+    - 4789/tcp
