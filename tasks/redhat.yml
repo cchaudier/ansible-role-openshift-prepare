@@ -38,14 +38,37 @@
     replace: 'enabled=0'
     backup: yes
 
-- name: Install the EPEL repo
+- name: Install the EPEL repo packages
   yum:
     name: "{{ item }}"
     enablerepo: "epel"
     state: present
   with_items:
-   - ansible
+#   - ansible
    - pyOpenSSL
+# #Ansible 2.2.0 dépendance
+# #Bug in openshiftAnsible
+   - python-devel
+   - python-httplib2
+   - sshpass
+   - python-keyczar
+#    - python-pip
+#    - python-devel
+#    - libffi-devel
+#    - openssl-devel
+#    - gcc
+#    - redhat-rpm-config
+#
+# - name: Install ansible
+#   pip:
+#     name: ansible
+#     version: 2.2.0.0
+#     state: present
+
+- name: Install ansible 2.2.0.0
+  yum:
+    name: http://ftp.uni-hannover.de/pub/mirror/linux/epel/7Server/x86_64/a/ansible-2.2.0.0-4.el7.noarch.rpm
+    state: present
 
 - name: Add insecure registry and logs to docker OPTIONS
   replace:
@@ -68,27 +91,15 @@
   git:
     repo: "https://github.com/openshift/openshift-ansible.git"
     dest: "{{ openshift_prepare_ansible_dir }}"
-    version: "master"
+    version: "master" #release-1.3
     accept_hostkey: yes
     force: yes
   register: git_deploy
   until: git_deploy|succeeded
   when: openshift_prepare_get_ansible_repo
 
-- name: "Open require ports"
-  firewalld:
-    port: "{{ item }}"
-    immediate: true
-    permanent: true
-    state: enabled
-  with_items:
-    - 80/tcp
-    - 443/tcp
-    - 8443/tcp
-    - 8053/tcp
-    - 8453/udp
-    - 10250/tcp
-    - 4789/tcp
-    - 2049/tcp
-    - 4001/tcp
-    - 4789/tcp
+- name: Change mode on openshift install dir
+  file:
+    path: "{{ openshift_prepare_ansible_dir }}"
+    state: directory
+    mode: 0777
