@@ -52,18 +52,6 @@
    - python-httplib2
    - sshpass
    - python-keyczar
-#    - python-pip
-#    - python-devel
-#    - libffi-devel
-#    - openssl-devel
-#    - gcc
-#    - redhat-rpm-config
-#
-# - name: Install ansible
-#   pip:
-#     name: ansible
-#     version: 2.2.0.0
-#     state: present
 
 - name: Install ansible 2.2.0.0
   yum:
@@ -91,7 +79,7 @@
   git:
     repo: "https://github.com/openshift/openshift-ansible.git"
     dest: "{{ openshift_prepare_ansible_dir }}"
-    version: "master" #release-1.3
+    version: "release-1.3"
     accept_hostkey: yes
     force: yes
   register: git_deploy
