@@ -1,6 +1,22 @@
 ---
 #https://docs.openshift.org/latest/install_config/install/host_preparation.html
 
+- name: Install the EPEL repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Update the yum cache
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
 - name: Installing Base Packages
   yum:
     name: "{{ item }}"
@@ -14,29 +30,14 @@
     - bridge-utils
     - bash-completion
     - docker
+    - python-cryptography
 
-- name: Update the yum cache
-  yum:
-    name: '*'
-    state: latest
-    update_cache: yes
-
-- name: Upgrade all packages
-  yum:
-    name: '*'
-    state: latest
-
-- name: Install the EPEL repo
-  yum:
-    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-    state: present
-
-- name: Disable the EPEL repository globally
-  replace:
-    dest: /etc/yum.repos.d/epel.repo
-    regexp: '^enabled=1'
-    replace: 'enabled=0'
-    backup: yes
+# - name: Disable the EPEL repository globally
+#   replace:
+#     dest: /etc/yum.repos.d/epel.repo
+#     regexp: '^enabled=1'
+#     replace: 'enabled=0'
+#     backup: yes
 
 - name: Install the EPEL repo packages
   yum:
